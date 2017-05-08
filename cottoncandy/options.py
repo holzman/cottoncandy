@@ -19,9 +19,9 @@ def get_key_from_s3fs():
 
 def get_key_from_environ():
     try:
-        ak = os.environ['AWS_ACCESS_KEY'],
-        sk = os.environ['AWS_SECRET_KEY'],
-        tk = os.environ['TOKEN'],
+        ak = os.environ['AWS_ACCESS_KEY']
+        sk = os.environ['AWS_SECRET_KEY']
+        tk = os.environ['TOKEN']
         return ak, sk, tk
     except:
         return
