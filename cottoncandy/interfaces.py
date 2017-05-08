@@ -60,7 +60,7 @@ class BasicInterface(InterfaceObject):
     """
 
     def __init__(self, bucket_name,
-                 ACCESS_KEY, SECRET_KEY, url=None,
+                 ACCESS_KEY, SECRET_KEY, TOKEN, url=None,
                  force_bucket_creation=False,
                  verbose=True, backend='s3'):
         """
@@ -87,7 +87,7 @@ class BasicInterface(InterfaceObject):
         """
 
         if backend == 's3':
-            self.backend_interface = S3Client(bucket_name, ACCESS_KEY, SECRET_KEY, url, force_bucket_creation)
+            self.backend_interface = S3Client(bucket_name, ACCESS_KEY, SECRET_KEY, TOKEN, url, force_bucket_creation)
         elif backend == 'gdrive':
             self.backend_interface = GDriveClient(ACCESS_KEY, SECRET_KEY)
         else:
@@ -1296,7 +1296,7 @@ class EncryptedInterface(DefaultInterface):
     """
     Interface that transparently encrypts everything uploaded to the cloud
     """
-    def __init__(self, bucket, access, secret, url, encryption='AES', key=None, *args, **kwargs):
+    def __init__(self, bucket, access, secret, token, url, encryption='AES', key=None, *args, **kwargs):
         """
 
         Parameters
@@ -1315,7 +1315,7 @@ class EncryptedInterface(DefaultInterface):
         """
         from .Encryption import AESEncryption, RSAAESEncryption
 
-        super(EncryptedInterface, self).__init__(bucket_name = bucket, ACCESS_KEY = access, SECRET_KEY = secret,
+        super(EncryptedInterface, self).__init__(bucket_name = bucket, ACCESS_KEY = access, SECRET_KEY = secret, TOKEN=token,
                                                  url = url, *args, **kwargs)
 
         if encryption not in ['AES', 'RSA']:

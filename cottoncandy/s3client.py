@@ -25,7 +25,7 @@ class S3Client(CCBackEnd):
     """
 
     @staticmethod
-    def connect(ACCESS_KEY, SECRET_KEY, url):
+    def connect(ACCESS_KEY, SECRET_KEY, TOKEN, url):
         """Connect to S3 using boto
 
         Parameters
@@ -41,11 +41,13 @@ class S3Client(CCBackEnd):
         s3 = boto3.resource('s3',
                             endpoint_url = url,
                             aws_access_key_id = ACCESS_KEY,
-                            aws_secret_access_key = SECRET_KEY)
+                            aws_secret_access_key = SECRET_KEY,
+                            aws_session_token = TOKEN
+        )
         s3.meta.client.meta.events.unregister('before-sign.s3', fix_s3_host)
         return s3
 
-    def __init__(self, bucket, access_key, secret_key, s3url, force_bucket_creation=False):
+    def __init__(self, bucket, access_key, secret_key, token, s3url, force_bucket_creation=False):
         """Constructor
 
         Parameters
@@ -58,7 +60,7 @@ class S3Client(CCBackEnd):
         """
         super(S3Client, self).__init__()
 
-        self.connection = S3Client.connect(access_key, secret_key, s3url)
+        self.connection = S3Client.connect(access_key, secret_key, token, s3url)
         self.url = s3url
         if self.check_bucket_exists(bucket):
             self.set_current_bucket(bucket)

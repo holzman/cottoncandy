@@ -20,8 +20,9 @@ def get_key_from_s3fs():
 def get_key_from_environ():
     try:
         ak = os.environ['AWS_ACCESS_KEY'],
-        sk = os.environ['AWS_SECRET_KEY']
-        return ak, sk
+        sk = os.environ['AWS_SECRET_KEY'],
+        tk = os.environ['TOKEN'],
+        return ak, sk, tk
     except:
         return
 
@@ -71,14 +72,17 @@ if len(config.read(usercfg)) == 0:
     # write keys to user config file
     ak = config.get("login", "access_key")
     sk = config.get("login", "secret_key")
-    if (ak == 'auto') and (sk == 'auto'):
+    tk = config.get("login", "token")
+
+    if (ak == 'auto') and (sk == 'auto') and (tk == 'auto'):
         result = get_keys()
         if result is not None:
-            ak, sk = result
+            ak, sk, tk = result
         else:
-            ak = sk = 'KEYSNOTFOUND'
+            ak = sk = tk = 'KEYSNOTFOUND'
         config.set("login", "access_key", ak)
         config.set("login", "secret_key", sk)
+        config.set("login", "token", tk)
 
     aesKey = config.get('encryption', 'key')
     if aesKey == 'auto':

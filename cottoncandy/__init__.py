@@ -15,6 +15,7 @@ from . import options
 
 ACCESS_KEY = options.config.get('login', 'access_key')
 SECRET_KEY = options.config.get('login', 'secret_key')
+TOKEN = options.config.get('login', 'token')
 ENDPOINT_URL = options.config.get('login', 'endpoint_url')
 
 default_bucket = options.config.get('basic', 'default_bucket')
@@ -27,6 +28,7 @@ encryptionKey = b64decode(options.config.get('encryption', 'key'))
 def get_interface(bucket_name=default_bucket,
                   ACCESS_KEY=ACCESS_KEY,
                   SECRET_KEY=SECRET_KEY,
+                  TOKEN=TOKEN,
                   endpoint_url=ENDPOINT_URL,
                   force_bucket_creation=force_bucket_creation,
                   verbose=True,
@@ -60,6 +62,7 @@ def get_interface(bucket_name=default_bucket,
     interface = DefaultInterface(bucket_name,
                                  ACCESS_KEY,
                                  SECRET_KEY,
+                                 TOKEN,
                                  endpoint_url,
                                  force_bucket_creation,
                                  verbose=verbose,
