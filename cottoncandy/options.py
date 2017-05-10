@@ -95,6 +95,15 @@ if len(config.read(usercfg)) == 0:
 
 # add things to old versions of config if needed
 else:
+
+    try:
+        (ak, sk, tk) = get_key_from_environ()
+        if ak: config.set("login", "access_key", ak)
+        if sk: config.set("login", "secret_key", sk)
+        if tk: config.set("login", "token", tk)
+    except:
+        pass
+
     needs_update = False
     try:	# encryption section
         aesKey = config.get('encryption', 'key')
